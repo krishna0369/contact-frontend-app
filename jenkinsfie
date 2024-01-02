@@ -1,0 +1,35 @@
+ pipeline {
+    agent any
+    
+
+    stages {
+        stage('git repo') {
+            steps {
+                git branch: 'main', url: 'https://github.com/krishna0369/contact-frontend-app.git'
+            }
+        }
+          stage('docker push') {
+            steps{
+                withCredentials([string(credentialsId: 'docker-cc-pwd', variable: 'dockerpwd')]) {
+                   sh 'docker login -u krishna0369 -p ${dockerpwd}'
+                   sh 'docker pull krishna0369/frontend-app'
+                } 
+            }    
+        }
+        
+        
+        stage('k8s deployment') {
+            steps {
+              sh 'kubectl apply -f deployment.yml'
+            } 
+        }
+        
+    }
+}
+
+         
+        
+       
+        
+    
+
