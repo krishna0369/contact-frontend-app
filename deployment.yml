@@ -7,18 +7,23 @@ spec:
  replicas: 1
  selector:
    matchLabels:
-     app: contactui
+     run: contactui
  template:
   metadata:
    name: contactui
    labels:
-     app: contactui
+     run: contactui
   spec:
     containers:
     - name: contactuicontainer
       image: krishna0369/frontend-app
       ports:
       - containerPort: 80
+      resources:
+         limits:
+           cpu: 500m
+         requests:
+           cpu: 200m
 ---
 apiVersion: v1
 kind: Service
