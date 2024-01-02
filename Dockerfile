@@ -1,7 +1,6 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14-alpine AS builder
+# Stage 1: Build Angular application
+FROM node:14 AS builder
 
-# Set the working directory in the container
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
@@ -19,11 +18,11 @@ COPY . .
 # Build the Angular app for production
 RUN ng build --prod
 
-# Use a smaller base image for the final stage
-FROM nginx:alpine
+# Stage 2: Create a lightweight container with Nginx to serve the Angular app
+FROM nginx:latest
 
 # Copy the built Angular app from the builder stage
-COPY --from=builder /app/dist/<your-angular-app-name> /usr/share/nginx/html
+COPY --from=builder /app/dist/your-angular-app-name /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
