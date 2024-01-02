@@ -22,7 +22,7 @@ RUN ng build --prod
 FROM nginx:latest
 
 # Copy the built Angular app from the builder stage
-COPY --from=builder /app/dist/your-angular-app-name /usr/share/nginx/html
+COPY --from=build /usr/local/app/dist/* /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
